@@ -48,8 +48,8 @@ export const api = {
     request("/api/member/stamps?" + new URLSearchParams(params)),
 
   deleteStamp: (stampId: number, stampKind: "FOOD" | "EXTRA") =>
-    request(`/api/stamps/${stampId}/give`, {
-      method: "DELETE",
+    request(`/api/stamps/${stampId}/revoke`, {
+      method: "POST",
       body: JSON.stringify({ stampKind }),
     }),
 
