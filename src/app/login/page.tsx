@@ -39,7 +39,7 @@ export default function LoginPage() {
       let role = "ADMIN";
       try {
         const data = await res.json();
-        if (data?.role) role = data.role;
+        if (data?.role) role = data.role.toUpperCase();
       } catch {
         // 바디 없을 경우 기본값 ADMIN
       }
