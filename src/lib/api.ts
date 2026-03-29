@@ -1,9 +1,17 @@
+function getXsrfToken(): string | undefined {
+  if (typeof document === "undefined") return undefined;
+  const match = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : undefined;
+}
+
 async function request(path: string, options?: RequestInit): Promise<Response> {
+  const xsrfToken = getXsrfToken();
   const res = await fetch(path, {
     ...options,
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...(xsrfToken && { "X-XSRF-TOKEN": xsrfToken }),
       ...options?.headers,
     },
   });
