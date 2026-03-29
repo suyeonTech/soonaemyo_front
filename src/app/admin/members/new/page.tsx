@@ -80,81 +80,93 @@ export default function MembersNewPage() {
     }
   }
 
-  return (
-    <div className="min-h-screen p-8 max-w-3xl mx-auto">
-      <div className="flex items-center gap-4 mb-8">
-        <Link
-          href="/admin"
-          className="text-sm text-gray-500 hover:underline"
-        >
-          ← 관리자 페이지
-        </Link>
-        <h1 className="text-2xl font-bold">부원 추가</h1>
-      </div>
+  const inputCls =
+    "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition bg-white";
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* 현재 학기 정보 */}
-        <div className="p-4 border border-gray-200 rounded">
-          <h2 className="text-sm font-semibold text-gray-600 mb-3">
-            현재 학기 (스탬프판 생성 기준)
-          </h2>
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <label className="block text-sm font-medium mb-1">연도</label>
-              <input
-                type="number"
-                value={currentYear}
-                onChange={(e) => setCurrentYear(e.target.value)}
-                required
-                className="w-full border border-gray-300 rounded px-3 py-2"
-              />
-            </div>
-            <div className="flex-1">
-              <label className="block text-sm font-medium mb-1">학기</label>
-              <select
-                value={currentSemester}
-                onChange={(e) => setCurrentSemester(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2"
-              >
-                <option value="1">1학기</option>
-                <option value="2">2학기</option>
-              </select>
-            </div>
+  return (
+    <div className="min-h-screen bg-gray-50 px-4 py-10">
+      <div className="max-w-2xl mx-auto">
+        <div className="flex items-center gap-3 mb-8">
+          <Link
+            href="/admin"
+            className="text-gray-400 hover:text-gray-600 transition text-lg leading-none"
+          >
+            ←
+          </Link>
+          <div>
+            <h1 className="text-xl font-bold text-gray-900">부원 추가</h1>
+            <p className="text-sm text-gray-500 mt-0.5">
+              스탬프판 생성 기준 학기를 먼저 설정하세요
+            </p>
           </div>
         </div>
 
-        {/* 부원 목록 */}
-        <div>
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-sm font-semibold text-gray-600">
-              부원 정보 ({members.length}/5명)
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* 현재 학기 */}
+          <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-5">
+            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
+              현재 학기
             </h2>
-            {members.length < 5 && (
-              <button
-                type="button"
-                onClick={addMember}
-                className="px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50"
-              >
-                + 부원 추가
-              </button>
-            )}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                  연도
+                </label>
+                <input
+                  type="number"
+                  value={currentYear}
+                  onChange={(e) => setCurrentYear(e.target.value)}
+                  required
+                  className={inputCls}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                  학기
+                </label>
+                <select
+                  value={currentSemester}
+                  onChange={(e) => setCurrentSemester(e.target.value)}
+                  className={inputCls}
+                >
+                  <option value="1">1학기</option>
+                  <option value="2">2학기</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-4">
+          {/* 부원 목록 */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center px-1">
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                부원 정보 ({members.length}/5)
+              </span>
+              {members.length < 5 && (
+                <button
+                  type="button"
+                  onClick={addMember}
+                  className="text-xs text-gray-500 hover:text-gray-800 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 transition"
+                >
+                  + 추가
+                </button>
+              )}
+            </div>
+
             {members.map((member, index) => (
               <div
                 key={index}
-                className="p-4 border border-gray-200 rounded relative"
+                className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-5"
               >
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-sm font-medium text-gray-600">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-xs font-semibold text-gray-400">
                     {index + 1}번 부원
                   </span>
                   {members.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeMember(index)}
-                      className="text-xs text-red-500 hover:underline"
+                      className="text-xs text-red-400 hover:text-red-600 transition"
                     >
                       제거
                     </button>
@@ -162,8 +174,8 @@ export default function MembersNewPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium mb-1">
-                      이름 <span className="text-red-500">*</span>
+                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                      이름 <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -172,12 +184,12 @@ export default function MembersNewPage() {
                         updateMember(index, "name", e.target.value)
                       }
                       required
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                      className={inputCls}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">
-                      학번 <span className="text-red-500">*</span>
+                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                      학번 <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -186,12 +198,12 @@ export default function MembersNewPage() {
                         updateMember(index, "studentNum", e.target.value)
                       }
                       required
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                      className={inputCls}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">
-                      가입 연도 <span className="text-red-500">*</span>
+                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                      가입 연도 <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="number"
@@ -201,12 +213,12 @@ export default function MembersNewPage() {
                       }
                       required
                       placeholder="예: 2024"
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                      className={inputCls}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">
-                      가입 학기 <span className="text-red-500">*</span>
+                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                      가입 학기 <span className="text-red-400">*</span>
                     </label>
                     <select
                       value={member.joinedSemester}
@@ -214,7 +226,7 @@ export default function MembersNewPage() {
                         updateMember(index, "joinedSemester", e.target.value)
                       }
                       required
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                      className={inputCls}
                     >
                       <option value="">선택</option>
                       <option value="1">1학기</option>
@@ -225,18 +237,22 @@ export default function MembersNewPage() {
               </div>
             ))}
           </div>
-        </div>
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-xs bg-red-50 px-3 py-2 rounded-lg">
+              {error}
+            </p>
+          )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 disabled:opacity-50"
-        >
-          {loading ? "등록 중..." : `부원 ${members.length}명 등록`}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gray-900 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-700 disabled:opacity-50 transition"
+          >
+            {loading ? "등록 중..." : `부원 ${members.length}명 등록`}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
