@@ -172,6 +172,26 @@ export default function AdminPage() {
     router.push("/login");
   }
 
+  async function handleCreateStamps() {
+    if (!searchYear || !searchSemester) {
+      alert("연도와 학기를 먼저 입력해주세요.");
+      return;
+    }
+    if (!window.confirm(`${searchYear}년 ${searchSemester}학기 스탬프판을 일괄생성하시겠습니까?`)) return;
+    try {
+      const res = await api.createStamps(Number(searchYear), Number(searchSemester));
+      if (!res.ok) {
+        alert("스탬프판 생성 중 오류가 발생했습니다.");
+        return;
+      }
+      const count: number = await res.json();
+      alert(`${count}명의 스탬프판이 생성되었습니다.`);
+      fetchStamps();
+    } catch {
+      alert("스탬프판 생성 중 오류가 발생했습니다.");
+    }
+  }
+
   async function handleDeleteAdmin(admin: AdminRecord) {
     if (!window.confirm(`${admin.name} 관리자를 삭제하시겠습니까?`)) return;
     try {
@@ -383,12 +403,20 @@ export default function AdminPage() {
       <section>
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-lg font-semibold">스탬프 목록</h2>
-          <Link
-            href="/admin/members/new"
-            className="px-3 py-1.5 text-sm bg-black text-white rounded hover:bg-gray-800"
-          >
-            부원 추가
-          </Link>
+          <div className="flex gap-2">
+            <button
+              onClick={handleCreateStamps}
+              className="px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50"
+            >
+              스탬프판 일괄생성
+            </button>
+            <Link
+              href="/admin/members/new"
+              className="px-3 py-1.5 text-sm bg-black text-white rounded hover:bg-gray-800"
+            >
+              부원 추가
+            </Link>
+          </div>
         </div>
 
         <form onSubmit={handleStampSearch} className="flex gap-2 mb-4 flex-wrap">
