@@ -73,4 +73,7 @@ export const api = {
     currentYear: number;
     currentSemester: number;
   }) => request("/api/members", { method: "POST", body: JSON.stringify(body) }),
+
+  createStamps: (year: number, semester: number) =>
+    request(`/api/stamps?year=${year}&semester=${semester}`, { method: "POST" }),
 };
